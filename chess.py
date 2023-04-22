@@ -28,12 +28,12 @@ class Piece:
     def move(self):
         pass
 
-    def draw(self, screen, width, height):
-        font1 = pygame.font.Font(width // 8)
+    def draw(self, screen, width, height, size):
+        font1 = pygame.font.SysFont('segoeuisymbol', int(width * 0.8) // 9)
         text = font1.render(self.picture, True, (0, 0, 0))
-        x = (width // 8) * self.x
-        y = (width // 8) * self.y
-        screen.blit(text, (x, y))
+        x = size * self.x
+        y = size * self.y + size * 0.1
+        screen.blit(text, (y, x))
 
 
 
@@ -118,7 +118,10 @@ class Knight(Piece):
 
 
 class ChessBoard:
-    def __init__(self) -> None:
+    def __init__(self, width, height) -> None:
+        self.width = width
+        self.height = height
+        self.size = self.width // 9
         self.board = [
             [Rook('b', 0, 0), Knight('b', 0, 1), Bishop('b', 0, 2), Queen('b', 0, 3),
              King('b', 0, 4), Bishop('b', 0, 5), Knight('b', 0, 6), Rook('b', 0, 7)],
@@ -131,11 +134,28 @@ class ChessBoard:
             [Pawn('w', 6, 0), Pawn('w', 6, 1), Pawn('w', 6, 2), Pawn('w', 6, 3),
              Pawn('w', 6, 4), Pawn('w', 6, 5), Pawn('w', 6, 6), Pawn('w', 6, 7)],  
             [Rook('w', 7, 0), Knight('w', 7, 1), Bishop('w', 7, 2), Queen('w', 7, 3),
-             King('w', 7, 6), Bishop('w', 7, 5), Knight('w', 7, 6), Rook('w', 7, 7)],           
+             King('w', 7, 4), Bishop('w', 7, 5), Knight('w', 7, 6), Rook('w', 7, 7)],           
         ]
 
-    def draw(self):
-        for row in self.board:
-            for piece in row:
+    def draw(self, screen):
+        for i in range(8):
+            row = self.board[i]
+            for j in range(8):
+                piece = row[j]
+                x = self.size * i
+                y = self.size * j
+                if (i + j) % 2:
+                    pygame.draw.rect(screen, (122, 122, 122), (y, x, self.size, self.size))
+                else:
+                    pygame.draw.rect(screen, (255, 255, 255), (y, x, self.size, self.size))
                 if piece:
-                    piece.draw()
+                    piece.draw(screen, self.width, self.width, self.size)
+        font1 = pygame.font.SysFont('segoeuisymbol', int(self.width * 0.8) // 9)
+        for i in range(8):
+            text = font1.render(str(9 - (i + 1)), True, (0, 0, 0))
+            screen.blit(text, (self.size * 8.1, self.size * i))
+        letters = 'abcdefgh'
+        for i in range(len(letters)):
+            text = font1.render(letters[i], True, (0, 0, 0))
+            screen.blit(text, (self.size * i, self.size * 8.1))
+
