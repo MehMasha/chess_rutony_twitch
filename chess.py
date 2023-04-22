@@ -8,25 +8,13 @@ class Piece:
         self.x = x
         self.y = y
         self.pictures = ''
-
-    def coords_to_x_y(self, coords):
-        letters = 'abcdefgh'
-        try:
-            x, y = list(coords.lower())
-            x = letters.find(x)
-            y = 7 - (int(y) - 1)
-            if 0 <= x <= 7 and 0 <= y <= 7:
-                return x, y
-            return
-        except:
-            print(f'Что-то не то с ходом {coords}')
-            return
         
     def check_move(self):
         pass
 
-    def move(self):
-        pass
+    def move(self, finish):
+        self.x = finish[1]
+        self.y = finish[0]
 
     def draw(self, screen, width, height, size):
         font1 = pygame.font.SysFont('segoeuisymbol', int(width * 0.8) // 9)
@@ -122,6 +110,7 @@ class ChessBoard:
         self.width = width
         self.height = height
         self.size = self.width // 9
+        self.hod = 'w'
         self.board = [
             [Rook('b', 0, 0), Knight('b', 0, 1), Bishop('b', 0, 2), Queen('b', 0, 3),
              King('b', 0, 4), Bishop('b', 0, 5), Knight('b', 0, 6), Rook('b', 0, 7)],
@@ -136,6 +125,41 @@ class ChessBoard:
             [Rook('w', 7, 0), Knight('w', 7, 1), Bishop('w', 7, 2), Queen('w', 7, 3),
              King('w', 7, 4), Bishop('w', 7, 5), Knight('w', 7, 6), Rook('w', 7, 7)],           
         ]
+
+    def coords_to_x_y(self, coords):
+        letters = 'abcdefgh'
+        try:
+            x, y = list(coords.lower())
+            x = letters.find(x)
+            y = 7 - (int(y) - 1)
+            if 0 <= x <= 7 and 0 <= y <= 7:
+                return x, y
+            return
+        except:
+            print(f'Что-то не то с ходом {coords}')
+            return
+        
+    def make_move(self, start, finish):
+        start = self.coords_to_x_y(start)
+        finish = self.coords_to_x_y(finish)
+        piece = self.board[start[1]][start[0]]
+        to_go = self.board[finish[1]][finish[0]]
+        if piece and piece.color == self.hod:
+            if piece and not to_go:
+                self.board[start[1]][start[0]], self.board[finish[1]][finish[0]] = to_go, piece
+                piece.move(finish)
+                if self.hod == 'b':
+                    self.hod = 'w'
+                else:
+                    self.hod = 'b'
+            if piece and to_go and to_go.color != piece.color:
+                self.board[start[1]][start[0]], self.board[finish[1]][finish[0]] = None, piece
+                piece.move(finish)
+                if self.hod == 'b':
+                    self.hod = 'w'
+                else:
+                    self.hod = 'b'
+
 
     def draw(self, screen):
         for i in range(8):
