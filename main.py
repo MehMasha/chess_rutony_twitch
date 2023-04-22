@@ -25,12 +25,10 @@ while game:
 
     print(f'Сейчас ходят: {board.hod}')
     hod = input('Введите кто и куда ходит:')
-    # try:
-    hod = hod.split()
-    start, finish = hod
-    board.make_move(start, finish)
-    # except:
-    #     print('Некорректный формат хода')
+    try:
+        board.make_move(hod)
+    except Exception as e:
+        print(f'Что-то пошло не так: {e}')
 
 
 
