@@ -40,7 +40,7 @@ def hello(q):
             text = js.get('text_text')
             username = js.get('user')
             user_id = js.get('user_id')
-            site = js.get('site')
+            site = js.get('site_cut')
             try:
                 text = text.strip().split()
                 if len(text) >= 1:
@@ -49,18 +49,19 @@ def hello(q):
                         if len(text) == 3:
                             start = text[1]
                             finish = text[2]
-                            q.put_nowait(f'{start} {finish}')
+                            q.put_nowait([start, finish, username, site])
                             print(f'{username} с {site} походил {start} {finish}')
+
 
             except:
                 pass
-            # q.put_nowait(f'{start} {finish}')
             time.sleep(1)
 
 
 
 
 q = queue.Queue()
+players = queue.Queue()
 
 
 try:

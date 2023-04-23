@@ -12,8 +12,10 @@ clock = pygame.time.Clock()
 game = True
 board = ChessBoard(WIDTH, HEIGHT)
 
-WIDTH = WIDTH // 9 * 10
+WIDTH = WIDTH // 9 * 11
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+# pygame.event.set_grab(True)
+font1 = pygame.font.SysFont('segoeuisymbol', int(WIDTH * 0.8) // 9)
 
 def main(q):
     while game:
@@ -23,18 +25,20 @@ def main(q):
                 quit()      
         screen.fill((200, 200, 200))
         board.draw(screen)
-        pygame.display.flip()
-        clock.tick(30)
+        pygame.display.flip() 
+        clock.tick(10)        
+
         if not q.empty():
             a = q.get_nowait()
-            print(f'Привет из функции main для {a}')
+            # print(f'Привет из функции main для {a}')
 
-            print(f'Сейчас ходят: {board.hod}')
+            # print(f'Сейчас ходят: {board.hod}')
             hod = a
             try:
                 board.make_move(hod)
             except Exception as e:
                 print(f'Что-то пошло не так: {e}')
+
 
 
 if __name__ == '__main__':
