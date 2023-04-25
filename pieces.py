@@ -77,7 +77,8 @@ class Pawn(Piece):
                     return True
         # 4) пешка, при достижении конца поля может превратиться в любую другую фигуру кроме пешки или короля 
         # 5) пешка уязвима к взятию на проходе и способна его делать
-        raise Exception('То ли ты собрался сделать взятие на проходе, то ли Я не знаю!!!!!!!!!')
+        return False
+        # raise Exception('То ли ты собрался сделать взятие на проходе, то ли Я не знаю!!!!!!!!!')
             
 
 
@@ -92,9 +93,6 @@ class King(Piece):
             self.picture = '♔'
 
     def check_move(self, finish, to_go, board):
-        # Параметр "ходил ли" для короля. Проверили. 
-        # Далее мы на основании описания рокировки (0-0 или 0-0-0) проверяем клетки на пустоту в нужную сторону. 
-        # Находим (или нет) ладью. У найденной Ладьи проверяем тот же параметр "ходила ли"
         if -1 <= self.row - finish[0] <= 1 and -1 <= self.col - finish[1] <= 1:
             self.has_moved = True
             return True
@@ -105,7 +103,7 @@ class Queen(Piece):
     def __init__(self, color, row, col) -> None:
         super().__init__(color, row, col)
         if self.color == 'b':
-            self.picture = '♛'
+            self.picture = '♛' 
         else:
             self.picture = '♕'
 
@@ -125,6 +123,7 @@ class Queen(Piece):
                 if piece:
                     return False
             return True
+        return False
 
 
 class Rook(Piece):
@@ -153,6 +152,7 @@ class Rook(Piece):
                     return False
             self.has_moved = True
             return True
+        return False
 
 
 class Bishop(Piece):
@@ -164,7 +164,7 @@ class Bishop(Piece):
             self.picture = '♗'
 
     def check_move(self, finish, to_go, board):
-        if abs(self.row - finish[0]) == abs(self.col - finish[1]):
+        if abs(self.row - finish[0]) == abs(self.col - finish[1]) != 0:
             n = abs(self.row - finish[0])
             dir_x = abs(finish[0] - self.row) // (finish[0] - self.row)
             dir_y = abs(finish[1] - self.col) // (finish[1] - self.col)
@@ -173,6 +173,7 @@ class Bishop(Piece):
                 if piece:
                     return False
             return True
+        return False
 
 
 class Knight(Piece):

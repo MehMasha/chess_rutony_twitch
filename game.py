@@ -28,11 +28,14 @@ def main(q):
         pygame.display.flip() 
         clock.tick(10)        
 
+        # hod = input('make move')
+        # print(hod)
+        # try:
+        #     board.make_move(hod.split())
+        # except Exception as e:
+        #     print(f'Что-то пошло не так: {e}')
         if not q.empty():
             a = q.get_nowait()
-            # print(f'Привет из функции main для {a}')
-
-            # print(f'Сейчас ходят: {board.hod}')
             hod = a
             try:
                 board.make_move(hod)
