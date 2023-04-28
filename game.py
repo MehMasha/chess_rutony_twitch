@@ -28,6 +28,8 @@ def main(q):
         pygame.display.flip() 
         clock.tick(10)        
 
+
+        # Код закомментированный для игры без чата
         # hod = input('make move')
         # print(hod)
         # try:
@@ -45,6 +47,6 @@ def main(q):
 
 
 if __name__ == '__main__':
-    main()
+    main(1)
 
 
